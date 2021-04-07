@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "609250890510",
+    "project_id": "attendance-record-system",
+    "storage_bucket": "attendance-record-system.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609250890510:android:c11ddec83fec00f049bd5f",
+        "android_client_info": {
+          "package_name": "com.summerproject.attendance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "609250890510-0m8k14eendll0ss901d1uvmpo82jil4d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXMiUwja-NYqCW-pi1_WAh0cMmooPVwvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "609250890510-0m8k14eendll0ss901d1uvmpo82jil4d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
