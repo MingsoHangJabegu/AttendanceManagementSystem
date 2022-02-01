@@ -36,7 +36,18 @@ class _ProfileState extends State<Profile> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return displayUserInformation(context, snapshot);
                 } else {
-                  return CircularProgressIndicator();
+                  return Center(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(),
+                      )
+                    ],
+                  ));
                 }
               })
         ],
@@ -45,6 +56,7 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget displayUserInformation(context, snapshot) {
+    // Getting the data of the user
     _getProfileData() async {
       var uid = await Provider.of(context).auth.getCurrentUID();
 
@@ -81,6 +93,7 @@ class _ProfileState extends State<Profile> {
       }
     }
 
+    //Displaying the user data
     return Container(
       color: Color.fromRGBO(83, 113, 212, 1),
       height: MediaQuery.of(context).size.height,
@@ -166,17 +179,7 @@ class _ProfileState extends State<Profile> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                              "Number of days present: " +
-                                  userInfo.present.toString(),
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                              )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                              "Number of days absent: ${userInfo.total - userInfo.present} (${absPercent.percent}%)",
+                              "Number of days absent: ${userInfo.total - userInfo.present}",
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
@@ -208,10 +211,12 @@ class TakeAttendance extends StatefulWidget {
 
 class _TakeAttendanceState extends State<TakeAttendance> {
   Holiday holiday = new Holiday("");
+  Semester semester = new Semester(0);
   DateTime now = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
+    //Updating the user data in the database
     Future<void> _updateStudentInfo(String time) async {
       var uid = await Provider.of(context).auth.getCurrentUID();
 
@@ -228,14 +233,12 @@ class _TakeAttendanceState extends State<TakeAttendance> {
       }
     }
 
-    // void _resetButton() async {
-    //   _isEnabled = true;
-    // }
 
     void _resetData() async {
       return await _updateStudentInfo("");
     }
 
+    //Function for displaying message that can be resused
     showMessage(String _message) {
       Fluttertoast.showToast(
           msg: _message,
@@ -247,7 +250,8 @@ class _TakeAttendanceState extends State<TakeAttendance> {
           fontSize: 17.0);
     }
 
-    void _onPressed() async {
+    //What the button should do
+    void onPressed() async {
       Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
       SharedPreferences preferences = await _prefs;
@@ -255,7 +259,8 @@ class _TakeAttendanceState extends State<TakeAttendance> {
       String todayDate = DateTime.now().day.toString();
       var uid = await Provider.of(context).auth.getCurrentUID();
 
-      if (todayDate == lastVisitDate) {
+      //Checking if the user has already pressed the button once today
+      if (todayDate != lastVisitDate) {
         try {
           await Provider.of(context)
               .db
@@ -264,37 +269,37 @@ class _TakeAttendanceState extends State<TakeAttendance> {
               .get()
               .then((result) {
             holiday.today = result.data['today'];
-            print(holiday.today);
           });
 
           await Provider.of(context)
               .db
               .collection('students')
               .document(uid)
-              .updateData({
-            'present': FieldValue.increment(1),
+              .get()
+              .then((results) {
+            semester.current = results.data['semester'];
           });
         } on Exception catch (e) {
           print(e);
         }
 
+
+        //Checking if today is a holiday or not and whether the time when taking the attendance has exceeded the time that it should have been taken
         if (holiday.today == 'working') {
-          if (now.hour < 24) {
+          if (now.hour < 12) {
             DateTime now = DateTime.now();
-            String today = DateFormat('dd-MM-yyyy').format(now);
-            // DateTime resetButton = now.add(const Duration(hours: 12));
+            String today = DateFormat('yyyy-MM-dd').format(now);
             DateTime resetData = now.add(const Duration(hours: 6));
 
-            // final timeToExpiry = resetButton.difference(now).inSeconds;
             final timeToResetData = resetData.difference(now).inSeconds;
 
-            // Timer(Duration(seconds: timeToExpiry), _resetButton);
             Timer(Duration(seconds: timeToResetData), _resetData);
 
             String hours = now.hour.toString(),
-             minutes = now.minute.toString(), 
-             seconds = now.second.toString();
+                minutes = now.minute.toString(),
+                seconds = now.second.toString();
 
+          //Adding a '0' in front of the hour, minute or second if it is single digit i.e. if hour is 9 making it 09.
             int hour = now.hour;
             if (hour < 10) {
               hours = '0' + hour.toString();
@@ -310,36 +315,54 @@ class _TakeAttendanceState extends State<TakeAttendance> {
               seconds = '0' + second.toString();
             }
             String currentTime = hours + ':' + minutes + ':' + seconds;
-            print(currentTime);
-            // String currentDate = DateFormat('dd-MM-yyyy').format(now);
-            // String time = currentDate + ' ' + currentTime;
+            var sem = semester.current.toString();
 
-            await Provider.of(context)
-                .db
-                .collection('students')
-                .document(uid)
-                .collection('attendance')
-                .document(today)
-                .setData({
-              'attendanceTime': currentTime,
-              'remarks': '-',
-            });
+            //Updating fields
+            try {
+              await Provider.of(context)
+                  .db
+                  .collection('students')
+                  .document(uid)
+                  .updateData({
+                'present': FieldValue.increment(1),
+              });
 
+              await Provider.of(context)
+                  .db
+                  .collection('students')
+                  .document(uid)
+                  .collection(sem)
+                  .document(today)
+                  .updateData({
+                'status': 'Present',
+                'attendanceTime': currentTime,
+              });
+            } on Exception catch (e) {
+              print(e);
+            }
             _updateStudentInfo(currentTime);
 
+            //Success
             showMessage("Attendance recorded");
-          } else {
-            showMessage("You are too late. Please contact xyz.");
+          } 
+          //Late for attendance
+          else {
+            showMessage("You are too late. Please contact the reception.");
           }
-        } else {
-          showMessage("Cannot take attendance right now");
+        } 
+        //Holiday
+        else {
+          showMessage("Cannot take attendance right now. Today is a holiday.");
         }
         preferences.setString("mDateKey", todayDate);
-      } else {
-        showMessage("Cannot take attendance right now");
+      } 
+      //Multiple button presses
+      else {
+        showMessage("You have already taken today's attendance.");
       }
     }
 
+    //Button
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
             primary: Color.fromRGBO(88, 145, 209, 1),
@@ -350,6 +373,6 @@ class _TakeAttendanceState extends State<TakeAttendance> {
             style: TextStyle(
               fontSize: 20,
             )),
-        onPressed: _onPressed);
+        onPressed: onPressed);
   }
 }

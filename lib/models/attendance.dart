@@ -1,3 +1,4 @@
+
 class UserInfo {
   int present = 0, total = 0;
 

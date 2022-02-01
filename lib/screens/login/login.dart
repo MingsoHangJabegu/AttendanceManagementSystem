@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
@@ -24,7 +23,7 @@ class _LoginState extends State<Login> {
   final formKey = GlobalKey<FormState>();
 
 //hiding password
-  void _toggleVisibility() {
+  void _toggleVisibility() async {
     setState(() {
       _isHidden = !_isHidden;
     });
@@ -105,45 +104,44 @@ class _LoginState extends State<Login> {
 
                       //LOGIN BUTTON
                       ElevatedButton(
-                        onPressed: () async {
-                          _checkConnection();
-                          if (_connection) {
-                            final ipAddress = await IpInfoApi.getIPAddress();
-                            String publicIP = "103.10.28.186";
-                            if (validate()) {
-                              try {
-                                if (ipAddress == publicIP) {
-                                  String uid =
-                                      await _auth.signInWithEmailAndPassword(
-                                          _email.trim(), _password);
-                                  showMessage("Login successful");
-                                  print(uid);
-                                } else {
-                                  showMessage(
-                                      "Please connect to xyz (password) and try again");
+                          onPressed: () async {
+                            _checkConnection();
+                            if (_connection) {
+                              final ipAddress = await IpInfoApi.getIPAddress();
+                              print(ipAddress);
+                              String publicIP = "103.10.31.21";
+
+                              if (validate()) {
+                                try {
+                                  if (ipAddress == publicIP) {
+                                    String uid =
+                                        await _auth.signInWithEmailAndPassword(
+                                            _email.trim(), _password);
+                                    showMessage("Login successful");
+                                    print(uid);
+                                  } else {
+                                    showMessage(
+                                        "Please connect to the wi-fi network CABUnifi and try again");
+                                  }
+                                } catch (e) {
+                                  setState(() {
+                                    _error = e.message;
+                                  });
+                                  print(e);
                                 }
-                              } catch (e) {
-                                setState(() {
-                                  _error = e.message;
-                                });
-                                print(e);
                               }
                             }
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: Color.fromRGBO(88, 145, 209, 1),
-                          onPrimary: Colors.black,
-                          elevation: 5,
-                          shadowColor: Colors.black
-                        ), 
-                        child: Text(
-                          "Login",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                          )
-                        ),
+                          },
+                          style: ElevatedButton.styleFrom(
+                              primary: Color.fromRGBO(88, 145, 209, 1),
+                              onPrimary: Colors.black,
+                              elevation: 5,
+                              shadowColor: Colors.black),
+                          child: Text(
+                            "Login",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          )),
                       SizedBox(height: 12.0),
                       Padding(
                         padding: EdgeInsets.only(bottom: 30),

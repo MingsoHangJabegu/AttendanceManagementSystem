@@ -13,3 +13,9 @@ class User {
         'image': image,
       };
 }
+
+class Semester {
+  int current = 0;
+
+  Semester(this.current);
+}
