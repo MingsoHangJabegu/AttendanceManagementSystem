@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-storage.js"></script> -->
+    <script src="../js/include.js"></script>
+
+    <link rel="stylesheet" href="../css/create.css">
+    <title>Create New Admin</title>
+</head>
+
+<body>
+    <div w3-include-html="header.html"></div>
+    <script>
+        includeHTML()
+    </script>
+    <form id="myForm" action="../php/create.php" method="POST">
+        <div class="container">
+            <div class="top">
+                <h1 class="h1">Create New Admin</h1>
+                <hr>
+            </div>
+            <label for="name"><b>Full Name</b></label>
+            <br>
+            <input type="text" placeholder="Full Name" name="name" id="name" required>
+            <br>
+
+            <label for="email"><b>Email</b></label>
+            <br>
+            <input type="email" placeholder="Email" name="email" id="email" required>
+            <br>
+
+            <label for="password"><b>Password</b></label>
+            <br>
+            <input type="password" placeholder="Password" name="pwd" id="pwd" required>
+            <br>
+
+            <label for="phone"><b>Phone No.</b></label>
+            <br>
+            <input type="number" placeholder="Phone Number" name="phone" id="phone" required>
+            <br>
+
+            <label for="admin"><b>Admin Type</b></label>
+            <br>
+            <select name="admin" id="admin" required>
+                <!-- <option value ="" selected disabled hidden>Select Admin</option> -->
+                <option value="super">Super Admin</option>
+                <option value="normal">Admin</option>
+            </select>
+            <br>
+            <hr>
+
+            <button type="submit" class="registerbtn">Create</button>
+        </div>
+    </form>
+
+</body>
+
+</html>

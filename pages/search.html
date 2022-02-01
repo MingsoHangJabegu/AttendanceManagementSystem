@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-storage.js"></script>
+    <script src="../js/include.js"></script>
+
+    <link rel="stylesheet" href="../css/create.css">
+    <title>Search</title>
+</head>
+
+<body>
+    <div w3-include-html="header.html"></div>
+    <script>
+        includeHTML()
+    </script>
+    <form id="myForm" action="result.html">
+        <div class="container">
+            <div class="top">
+                <h1 class="h1">Search</h1>
+                <hr>
+            </div>
+
+            <label for="roll"><b>Roll No.</b></label>
+            <br>
+            <input type="text" placeholder="Roll Number" name="roll" id="roll" required>
+            <br>
+
+            <label for="semester"><b>Semester</b></label>
+            <br>
+            <select name="semester" id="semester" required>
+                <!-- <option value ="" selected disabled hidden>Select Faculty</option> -->
+                <option value="current">Current</option>
+                <option value="1">1st</option>
+                <option value="2">2nd</option>
+                <option value="3">3rd</option>
+                <option value="4">4th</option>
+                <option value="5">5th</option>
+                <option value="6">6th</option>
+                <option value="7">7th</option>
+            </select>
+            <br>
+            <hr>
+
+            <button type="submit" class="registerbtn" onclick="searchUser()">Search</button>
+        </div>
+    </form>
+    <table class="flat-table" id="attendance-table"></table>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/search.js"></script>
+</body>
+
+</html>

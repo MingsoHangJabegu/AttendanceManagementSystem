@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-storage.js"></script>
+    <script src="../js/include.js"></script>
+
+    <link rel="stylesheet" href="../css/create.css">
+    <title>Create New User</title>
+</head>
+
+<body>
+    <div w3-include-html="header.html"></div>
+    <script>
+        includeHTML()
+    </script>
+    <form id="myForm">
+        <div class="container">
+            <div class="top">
+                <h1 class="h1">Create New User</h1>
+                <hr>
+            </div>
+            <label for="name"><b>Full Name</b></label>
+            <br>
+            <input type="text" placeholder="Full Name" name="name" id="name" required>
+            <br>
+
+            <label for="email"><b>Email</b></label>
+            <br>
+            <input type="email" placeholder="Email" name="email" id="email" required>
+            <br>
+
+            <label for="password"><b>Password</b></label>
+            <br>
+            <input type="password" placeholder="Password" name="pwd" id="pwd" required>
+            <br>
+
+            <label for="roll"><b>Roll No.</b></label>
+            <br>
+            <input type="text" placeholder="Roll Number" name="roll" id="roll" required>
+            <br>
+
+            <label for="phone"><b>Phone No.</b></label>
+            <br>
+            <input type="number" placeholder="Phone Number" name="phone" id="phone" required>
+            <br>
+
+            <label for="year"><b>Year</b></label>
+            <br>
+            <input type="number" placeholder="Year Joined" name="year" id="year" required>
+            <br>
+
+            <label for="faculty"><b>Faculty</b></label>
+            <br>
+            <select name="faculty" id="faculty" required>
+                <!-- <option value ="" selected disabled hidden>Select Faculty</option> -->
+                <option value="BIM">BIM</option>
+                <option value="BBA">BBA</option>
+                <option value="CSIT">CSIT</option>
+            </select>
+            <br>
+
+            <label for="image"><b>Image</b></label>
+            <br>
+            <input type="file" placeholder="Select Image" name="img" id="image" accept="image/*">
+            <br>
+            <hr>
+
+            <button type="submit" class="registerbtn">Create</button>
+        </div>
+    </form>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/create.js"></script>
+
+</body>
+
+</html>

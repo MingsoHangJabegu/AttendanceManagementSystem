@@ -1,0 +1,56 @@
+body{
+    background-color: rgb(238, 238, 238);;
+}
+
+.flat-table {
+    font-family: sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 115%;
+    overflow: auto;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+    
+th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: normal;
+    padding: 20px 30px;
+    text-align: center;
+    cursor: pointer;
+}
+td {
+    background-color: rgb(238, 238, 238);
+    color: rgb(20, 19, 19);
+    padding: 20px 30px;
+}
+.edit, .save{
+    outline: none;
+    background: none;
+    border: none;
+  }
+  
+.edit, .save{
+padding: 5px 10px;
+cursor: pointer;
+}
+
+.save{
+display: none;
+background: #4CAF50;
+color: #ffffff;
+}
+.save:hover{
+background: darken(#4CAF50, 10%);
+}
+
+
+.edit{
+background: #4CAF50;
+color: #ffffff;
+}
+.edit:hover{
+    background: darken(#4CAF50, 10%);
+}
+
