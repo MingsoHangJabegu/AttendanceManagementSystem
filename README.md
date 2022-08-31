@@ -15,5 +15,5 @@ The android application only allows logging in to the application through a cert
 
 The design was given minimum time so please don't judge it too harshly.
 
-(My first every project)
+(My first ever project)
 
